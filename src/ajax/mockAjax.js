@@ -3,6 +3,7 @@
 
 //1、引入
 import axios from 'axios'
+
 import Nprogress from 'nprogress'
 import 'nprogress/nprogress.css'
 
@@ -10,7 +11,7 @@ import 'nprogress/nprogress.css'
 //2、用axios创建新的实例 进行二次封装
 const instance =axios.create({
     //（1）配置基础路径和超时限制
-    baseURL:'/api',// 配置基础路径
+    baseURL:'/mock',// 配置基础路径
     timeout:20000
 
 })

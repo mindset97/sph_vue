@@ -70,12 +70,22 @@ export default {
   },
   methods:{
     toSearch(){
-      this.$router.push({
+      let location={
         name:'search',
-        query: { keyword1: this.keyword.toUpperCase() },
-        params: { keyword: this.keyword },
+        params:{keyword:this.keyword},
+      }
 
-      })
+      if(this.$route.query){
+        location.query=this.$route.query
+      }
+
+      this.$router.push(location)
+      // this.$router.push({
+      //   name:'search',
+      //   query: { keyword1: this.keyword.toUpperCase() },
+      //   params: { keyword: this.keyword },
+
+      // })
     }
   }
 

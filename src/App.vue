@@ -15,10 +15,18 @@ import Footer from '@/components/Footer'
     components:{
     Header,
     Footer
-    
+    },
+    // home页和search页都有typeNav，每次打开都会发请求
+     mounted(){
+            this.getCategoryList()
+        },
 
-    }
+      methods:{
+          getCategoryList(){
+              this.$store.dispatch('getCategoryList')
+          }
    
+  }
   }
 </script>
 
