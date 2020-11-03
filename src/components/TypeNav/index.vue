@@ -2,11 +2,11 @@
     <div>
             <!-- 商品分类导航 -->
         <div class="type-nav">
-            <div class="container">
-                 <div >
+            <div class="container" >
+                 <div  @mouseleave="moveDivOut" @mouseenter="isShow = true" >
                 <h2 class="all">全部商品分类</h2>
-                 <transition name="sort" v-show="isShow">
-               <div class="sort">
+                 <transition name="sort">
+                  <div class="sort"  v-show="isShow">
                     <div class="all-sort-list2" @click="toSearch">
 
                         <!-- 这个item会遍历出一堆 -->
@@ -72,6 +72,12 @@ import { mapState } from 'vuex';
 
             }
         },
+        mounted(){
+        if (this.$route.path !== "/home") {
+        this.isShow = false;
+        }
+
+       },
 
         // 数据一旦打开页面就有
         // 封装成函数 方便以后调用
@@ -91,7 +97,7 @@ import { mapState } from 'vuex';
 
     moveDivOut() {
       this.currentIndex = -1;
-      if (this.$route.path !== "/home") {
+      if (this.$route.path !== "/home" && this.$route.path !== "/") {
         this.isShow = false;
       }
     }, 

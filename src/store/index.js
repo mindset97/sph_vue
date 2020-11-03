@@ -9,6 +9,7 @@ const actions={}
 const getters={}
 
 import home from './home'
+import search from './search'
 
 export default new Vuex.Store({
     state,
@@ -17,5 +18,6 @@ export default new Vuex.Store({
     getters,
     modules:{
         home,
+        search
     }
 })

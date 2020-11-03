@@ -6,7 +6,7 @@ import '@/api' //这里直接引入api文件，那么api文件就会运行
 import store from '@/store'
 
 
-//引入mock
+//引入mockserver文件
 import '@/mock/mockServer' 
 //引入swiper
 import Swiper from 'swiper'
@@ -29,13 +29,12 @@ Vue.component('SliderLoop',SliderLoop)
 
 
 new Vue({
+  beforeCreate() {
+    Vue.prototype.$bus = this
+  },
   render: h => h(App),
   router,
   store
-  // store
-  // 当我们安装完router后，每个组件都可以通过$this.routers 路由器对象
-  // 每个组件都可以通过$this.route 路由对象
-
 }).$mount('#app')
 
 
