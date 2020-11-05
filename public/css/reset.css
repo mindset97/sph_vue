@@ -63,7 +63,7 @@ hr {
 html { overflow-y: scroll; }
 
 a:hover{
-    color : #E1251B !important;
+    /* color : #E1251B !important; */
     text-decoration: underline;
 }
 

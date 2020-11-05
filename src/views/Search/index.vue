@@ -46,24 +46,33 @@
           <div class="sui-navbar">
             <div class="navbar-inner filter">
               <ul class="sui-nav">
-                <li class="active">
-                  <a href="#">综合</a>
+                <li :class="{ active: sortFlag === '1' }">
+                  <a href="javascript:;"  @click="sortGoods('1')">综合
+                     <i
+                      v-if="sortFlag === '1'"
+                      class="iconfont iconxiangshang"
+                      :class="{
+                        iconxiangxia: sortType === 'desc',
+                        iconxiangshang: sortType === 'asc',
+                      }"
+                    ></i>
+
+                  </a>
                 </li>
-                <li>
-                  <a href="#">销量</a>
-                </li>
-                <li>
-                  <a href="#">新品</a>
-                </li>
-                <li>
-                  <a href="#">评价</a>
-                </li>
-                <li>
-                  <a href="#">价格⬆</a>
-                </li>
-                <li>
-                  <a href="#">价格⬇</a>
-                </li>
+                 <li :class="{ active: sortFlag === '2' }">
+                 <a href="javascript:;" @click="sortGoods('2')">
+                    价格
+                    <i v-if="sortFlag === '2'"
+                      class="iconfont iconxiangxia "
+                      :class="{
+                        iconxiangxia: sortType === 'desc',
+                        iconxiangshang: sortType === 'asc',
+                      }"
+                    ></i>
+
+
+                   </a></li>
+                
               </ul>
             </div>
           </div>
@@ -112,35 +121,15 @@
               </li>
             </ul>
           </div>
-          <div class="fr page">
-            <div class="sui-pagination clearfix">
-              <ul>
-                <li class="prev disabled">
-                  <a href="#">«上一页</a>
-                </li>
-                <li class="active">
-                  <a href="#">1</a>
-                </li>
-                <li>
-                  <a href="#">2</a>
-                </li>
-                <li>
-                  <a href="#">3</a>
-                </li>
-                <li>
-                  <a href="#">4</a>
-                </li>
-                <li>
-                  <a href="#">5</a>
-                </li>
-                <li class="dotted"><span>...</span></li>
-                <li class="next">
-                  <a href="#">下一页»</a>
-                </li>
-              </ul>
-              <div><span>共10页&nbsp;</span></div>
-            </div>
-          </div>
+
+           <Pagination  
+           :currentPageNum="searchParams.pageNo"
+            :pageSize="searchParams.pageSize"
+            :total="goodsListInfo.total"
+            :continueNum="5"
+            @changeNum="changeNum"
+           ></Pagination>
+  
         </div>
       </div>
     </div>
@@ -148,7 +137,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters,mapState } from "vuex";
 import SearchSelector from "./SearchSelector/SearchSelector";
 export default {
   name: "Search",
@@ -189,9 +178,9 @@ export default {
         category3Id: "",
         categoryName: "",
         keyword: "",
-        order: "1:desc",
-        pageNo: 1,
-        pageSize: 2,
+        order: "1:desc",//1代表升序 2代表降序
+        pageNo: 1,//当前页
+        pageSize: 2,//总条数
         props: [],
         trademark: "",
       },
@@ -228,6 +217,7 @@ export default {
 
     //删除面包屑的类名
     removeCategoryName() {
+            this.searchParams.pageNo = 1
       // this.searchParams.categoryName = undefined
       delete this.searchParams.categoryName;
       // this.getGoodsListInfo();发请求 直接dispatch去发请求，不会去更改之前的路径，因此我们要手动的去修改路径并且发请求
@@ -242,6 +232,7 @@ export default {
 
     //删除面包屑的关键字
     removeKeyword() {
+            this.searchParams.pageNo = 1
       delete this.searchParams.keyword;
       // this.getGoodsListInfo();发请求 直接dispatch去发请求，不会去更改之前的路径，因此我们要手动的去修改路径并且发请求
       // this.getGoodsListInfo();
@@ -255,6 +246,7 @@ export default {
 
     //根据品牌搜索
     searchForTrademark(trademark) {
+            this.searchParams.pageNo = 1
       //获取到子组件传递过来的trademark对象，拼接成参数所需要的格式
       let trademarkInfo = `${trademark.tmId}:${trademark.tmName}`;
       //修改搜索参数发请求
@@ -263,6 +255,7 @@ export default {
     },
     //删除面包屑的品牌
     removeTrademark() {
+            this.searchParams.pageNo = 1
       this.searchParams.trademark = undefined;
       this.getGoodsListInfo();
     },
@@ -285,10 +278,51 @@ export default {
     removeProp(index){
       this.searchParams.props.splice(index,1)
       this.getGoodsListInfo();
+    },
+
+     //排序商品 按照综合价格
+    sortGoods(sortFlag) {
+      //获取原来的排序规则（排序标志排序类型）
+      // let originSortFlag = this.searchParams.order.split(':')[0]
+      let originSortFlag = this.sortFlag;
+      let originSortType = this.sortType;
+
+      let newOrder = "";
+      // 判断点击传递过来的标志是否和原来的排序标志一样
+      if (sortFlag === originSortFlag) {
+        //原来的排序标志和新点击的一样，我们只需要改变排序类型就好
+        newOrder = `${originSortFlag}:${
+          originSortType === "desc" ? "asc" : "desc"
+        }`;
+      } else {
+        //原来的排序标志和新点击的不一样，我们需要改变排序标志，排序类型默认给一个
+        newOrder = `${sortFlag}:desc`;
+      }
+      this.searchParams.pageNo = 1
+      this.searchParams.order = newOrder;
+      this.getGoodsListInfo();
+    },
+
+    changeNum(page){
+            this.searchParams.pageNo = 1
+      this.searchParams.pageNo = page
+      this.getGoodsListInfo()
+      
     }
+ 
   },
   computed: {
     ...mapGetters(["goodsList"]),
+    ...mapState({
+     goodsListInfo: (state) => state.search.goodsListInfo,
+    }),
+     sortFlag() {
+      return this.searchParams.order.split(":")[0];
+    },
+    
+    sortType() {
+      return this.searchParams.order.split(":")[1];
+    },
   },
 
   watch: {
@@ -297,6 +331,7 @@ export default {
         this.handlerParams();
         this.getGoodsListInfo();
       },
+   
     },
   },
 
@@ -305,7 +340,6 @@ export default {
   },
 };
 </script>
-
 <style lang="less" scoped>
 .main {
   margin: 10px 0;
@@ -549,92 +583,7 @@ export default {
         }
       }
 
-      .page {
-        width: 733px;
-        height: 66px;
-        overflow: hidden;
-        float: right;
-
-        .sui-pagination {
-          margin: 18px 0;
-
-          ul {
-            margin-left: 0;
-            margin-bottom: 0;
-            vertical-align: middle;
-            width: 490px;
-            float: left;
-
-            li {
-              line-height: 18px;
-              display: inline-block;
-
-              a {
-                position: relative;
-                float: left;
-                line-height: 18px;
-                text-decoration: none;
-                background-color: #fff;
-                border: 1px solid #e0e9ee;
-                margin-left: -1px;
-                font-size: 14px;
-                padding: 9px 18px;
-                color: #333;
-              }
-
-              &.active {
-                a {
-                  background-color: #fff;
-                  color: #e1251b;
-                  border-color: #fff;
-                  cursor: default;
-                }
-              }
-
-              &.prev {
-                a {
-                  background-color: #fafafa;
-                }
-              }
-
-              &.disabled {
-                a {
-                  color: #999;
-                  cursor: default;
-                }
-              }
-
-              &.dotted {
-                span {
-                  margin-left: -1px;
-                  position: relative;
-                  float: left;
-                  line-height: 18px;
-                  text-decoration: none;
-                  background-color: #fff;
-                  font-size: 14px;
-                  border: 0;
-                  padding: 9px 18px;
-                  color: #333;
-                }
-              }
-
-              &.next {
-                a {
-                  background-color: #fafafa;
-                }
-              }
-            }
-          }
-
-          div {
-            color: #333;
-            font-size: 14px;
-            float: right;
-            width: 241px;
-          }
-        }
-      }
+   
     }
   }
 }

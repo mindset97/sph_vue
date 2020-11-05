@@ -18,6 +18,8 @@ const actions = {
       }
     }
   }
+
+  //包含n个计算属性方法的数据
   const getters = {
     //是把获取到的对象当中的数组全部计算出来
     goodsList(state){

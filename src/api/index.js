@@ -1,40 +1,6 @@
 // //所有的接口请求函数
 
 
-// //
-// function sendPOST(){
-//   axios.post('http://127.0.0.1/server', 'e=500&f=600', {
-//     params: {a:100,b:200},
-//     headers: {c:300,d:400}
-//   }).then(response => {
-//     console.log(response);
-//   })
-// }
-
-// function sendGET(){
-//   axios({
-//     //是配置对象
-//     //请求的类型
-//     method: 'GET',
-//     //URL设置
-//     url: 'http://127.0.0.1/server', 
-//     //参数 
-//     params: {
-//     //配的是query参数
-//       a:100,
-//       b:200
-//     },
-//     //设置请求头信息 查询字符串
-//     headers: {
-//       c:300,
-//       d:400
-//     }
-//   }).then(response => {
-//     console.log(response);
-//   });
-// }
-
-
 //每个接口发请求都分装成函数
 
 // /api/product/getBaseCategoryList

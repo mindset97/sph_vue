@@ -19,11 +19,13 @@ import 'swiper/css/swiper.css'
 import TypeNav from '@/components/TypeNav'
 import Floor from '@/components/Floor'
 import SliderLoop from '@/components/SliderLoop'
+import Pagination from '@/components/Pagination'
 
 //全局注册 
 Vue.component('TypeNav',TypeNav)
 Vue.component('Floor',Floor)
 Vue.component('SliderLoop',SliderLoop)
+Vue.component('Pagination',Pagination)
 
 
 
