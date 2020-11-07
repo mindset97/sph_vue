@@ -3,9 +3,15 @@ import Home from "@/views/Home"
 import Login from "@/views/Login"
 import Register from "@/views/Register"
 import Search from "@/views/Search"
+import Detail from '@/views/Detail'
+
 
 export default[
         //每一个路由是一个对象
+        {
+            path:'/detail/:skuId',
+            component:Detail
+        },
         {
             path:'/home',
             component:Home

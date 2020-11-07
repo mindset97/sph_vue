@@ -15,38 +15,44 @@ import mockAjax from '@/ajax/mockAjax'
 //写接口请求函数
 export const reqCategoryList = () => {
   return Ajax({
-    url:'/product/getBaseCategoryList',
-    method:'get'
+    url: '/product/getBaseCategoryList',
+    method: 'get'
   })
 }
 
 // reqCategoryList()
 
 //mock接口
-export const reqBannerLlist=()=>{
+export const reqBannerLlist = () => {
   return mockAjax({
-    url:'/banner',
-    method:'get'
+    url: '/banner',
+    method: 'get'
   })
 }
 
-export const reqFloorList=()=>{
+export const reqFloorList = () => {
   return mockAjax({
-    url:'/floor',
-    method:'get'
+    url: '/floor',
+    method: 'get'
   })
 }
 
 //api/list
-export const reqGoodsListInfo=(searchParams)=>{
+export const reqGoodsListInfo = (searchParams) => {
   return Ajax({
-    url:'list',
-    method:'post',
-    data:searchParams
+    url: 'list',
+    method: 'post',
+    data: searchParams
   })
 }
 // reqGoodsListInfo({})
 
 
-
+//获取商品详情数据
+export const reqGoodsDetailInfo = (skuId) => {
+  return Ajax({
+    url: `/item/${skuId}`,
+    method: 'get'
+  })
+}
 
