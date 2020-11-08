@@ -56,3 +56,10 @@ export const reqGoodsDetailInfo = (skuId) => {
   })
 }
 
+export const reqAddOrUpdateShopCart = (skuId,skuNum)=>{
+  return Ajax({
+      url:`/cart/addToCart/${skuId}/${skuNum}`,
+      method:"post"
+  })
+}
+

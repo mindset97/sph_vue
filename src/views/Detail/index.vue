@@ -80,14 +80,14 @@
                 </dd>
               </dl>
             </div>
-            <div class="cartWrap">
+                 <div class="cartWrap">
               <div class="controls">
-                <input autocomplete="off" class="itxt">
-                <a href="javascript:" class="plus">+</a>
-                <a href="javascript:" class="mins">-</a>
+                <input autocomplete="off" class="itxt" v-model="skuNum" @change="skuNum = skuNum > 1?skuNum:1"/>
+                <a href="javascript:" class="plus" @click="skuNum++">+</a>
+                <a href="javascript:" class="mins" @click="skuNum > 1?skuNum--:skuNum=1">-</a>
               </div>
               <div class="add">
-                <a href="javascript:">加入购物车</a>
+                <a href="javascript:" @click="addCart">加入购物车</a>
               </div>
             </div>
           </div>
@@ -344,6 +344,12 @@
 
   export default {
     name: 'Detail',
+    data(){
+    return{
+        skuId:"",
+        skuNum:1
+    }
+},
     
 
     beforeMount(){
@@ -369,7 +375,31 @@
       saleAttrValue.isChecked = '1'
     },
 
+    async addCart(){
+      //先要发个请求，告诉后台我要添加购物车，把请求所需要的参数带上
+      //然后后台会添加好购物车数据之后返回响应
+      //如果响应成功，再跳转到添加购物车成功页面
+      //如果不成功，那么就呆再原地
+      let {skuId,skuNum} = this
+      try {
+        const result = await this.$store.dispatch('addOrUpdateShopCart',{skuId,skuNum})
+        if(result === 'ok'){
+          //成功之后，我们再去跳转到添加成功页面
+          alert('添加购物车成功，自动跳转到成功页面')
+          //跳转之前把添加购物车成功页面所需要的数据传递过去或者存储
+          sessionStorage.setItem('SKUINFO_KEY',JSON.stringify(this.skuInfo))
+          this.$router.push('/addcartsuccess?skuNum='+skuNum)
+        }else{
+          alert('添加购物车失败')
+        }
+      } catch (error) {
+        alert('添加购物车失败' + error.message)
+      }
+    }
+
   },
+
+  
 
    computed: {
     ...mapGetters(["categoryView", "skuInfo", "spuSaleAttrList"]),
