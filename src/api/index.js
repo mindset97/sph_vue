@@ -94,3 +94,50 @@ export const reqDeleteCart = (skuId) => {
     method:'delete'
   })
 }
+
+// 请求注册用户
+// /api/user/passport/register
+// post
+
+export const reqUserRegister = (userInfo) => {
+  return Ajax({
+    url:'/user/passport/register',
+    method:'post',
+    data:userInfo
+  })
+}
+// 请求用户登录
+// /api/user/passport/login   post
+export const reqUserLogin = (userInfo) => {
+  return Ajax({
+    url:'/user/passport/login',
+    method:'post',
+    data:userInfo
+  })
+}
+
+
+//请求退出登录
+
+///api/user/passport/logout
+
+//get
+
+export const reqUserLogout = () => {
+  return Ajax({
+    url:'/user/passport/logout',
+    method:'get'
+  })
+}
+
+//请求获取订单交易信息
+// /api/order/auth/trade   get
+
+export const reqTradeInfo = () => {
+  return Ajax({
+    url:'/order/auth/trade',
+    method:'get'
+  })
+}
+
+

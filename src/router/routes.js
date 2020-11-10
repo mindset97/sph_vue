@@ -6,10 +6,23 @@ import Search from "@/views/Search"
 import Detail from '@/views/Detail'
 import AddCartSuccess from '@/views/AddCartSuccess'
 import ShopCart from '@/views/ShopCart'
+import Trade from '@/views/Trade'
 
 
 export default[
         //每一个路由是一个对象
+        {
+          path:'/trade',
+          component:Trade
+        },
+        {
+            path:'/login',
+            component:Login
+          },
+          {
+            path:'/register',
+            component:Register
+          },
         {
             path:'/shopcart',
             component:ShopCart

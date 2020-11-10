@@ -25,11 +25,17 @@ instance.interceptors.request.use((config) => {
     //接收参数
     //开启进度条
 
-    //每次请求都在请求头当中添加用户临时标识
     let userTempId = store.state.user.userTempId
-    if (userTempId) {
-        config.headers.userTempId = userTempId
+    if(userTempId){
+      config.headers.userTempId = userTempId
     }
+  
+    //每次请求带上用户的登录标识
+    let token = store.state.user.userInfo.token
+    if(token){
+      config.headers.token = token
+    }
+  
 
     Nprogress.start()
     return config

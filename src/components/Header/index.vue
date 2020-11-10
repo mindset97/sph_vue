@@ -4,9 +4,13 @@
     <!-- 头部的第一行 -->
     <div class="top">
       <div class="container">
-        <div class="loginList">
+          <div class="loginList">
           <p>尚品汇欢迎您！</p>
-          <p>
+          <p v-if="$store.state.user.userInfo.name">
+            <a href="javascript:;">{{$store.state.user.userInfo.name}}</a>
+            <a href="javascript:;" class="register" @click="logout" >退出登录</a>
+          </p>
+          <p v-else>
             <span>请</span>
             <router-link to="/login">登录</router-link>
             <!-- <a href="###">登录</a> -->
@@ -87,6 +91,22 @@ export default {
     },
     clearKeyword(){
       this.keyword = ''
+    },
+    //异步函数 返回promise对象 promise对象成功还是失败，看函数return
+     async logout(){
+      try {
+        const result = await this.$store.dispatch('userLogout')
+        if(result === 'ok'){
+          alert('退出登录成功')
+          this.$router.push('/home')
+        }else{
+          alert('退出登录失败')
+        }
+      } catch (error) {
+        alert('退出登录失败')
+      }
+      
+
     }
   },
 };
