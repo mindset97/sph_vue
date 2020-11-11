@@ -1,7 +1,9 @@
-// //所有的接口请求函数
+// 所有的接口请求函数
 
+// 所有接口都要使用axios去发请求获取数据
+// 每个接口发请求都封装成函数
+// 哪里需要接口的数据，就调用相关的接口请求函数
 
-//每个接口发请求都分装成函数
 
 // /api/product/getBaseCategoryList
 // 请求方式  get
@@ -14,13 +16,21 @@ import mockAjax from '@/ajax/mockAjax'
 
 //写接口请求函数
 export const reqCategoryList = () => {
+  //这个ajax是一个文件，怎么返回成函数了？？
   return Ajax({
     url: '/product/getBaseCategoryList',
     method: 'get'
   })
 }
 
+//测试接口
 // reqCategoryList()
+// 在main.js文件中直接引入即可
+// import "@/api"
+
+// 或者在main.js文件中解构，再调用
+// import {reqCategoryList} from "@/api"
+// reqCategoryList
 
 //mock接口
 export const reqBannerLlist = () => {
@@ -141,3 +151,41 @@ export const reqTradeInfo = () => {
 }
 
 
+// 请求创建订单
+// /api/order/auth/submitOrder?tradeNo={tradeNo}
+// POST
+// 参数  交易编号是query  其余是请求体data
+
+export const reqSubmitOrder = (tradeNo,tradeInfo) => {
+  return Ajax({
+    url:`/order/auth/submitOrder`,
+    method:'post',
+    params:{
+      tradeNo
+    },
+    data:tradeInfo
+  })
+}
+
+
+// /api/payment/weixin/createNative/{orderId}
+// get
+// 获取订单号
+export const reqOrderInfo = (orderId) => {
+  return Ajax({
+    url:`/payment/weixin/createNative/${orderId}`,
+    method:'get'
+  })
+}
+
+
+// 请求获取我的订单数据
+// /api/order/auth/{page}/{limit}
+// get
+
+export const reqMyOrderInfo = (page,limit) => {
+  return Ajax({
+    url:`/order/auth/${page}/${limit}`,
+    method:'get'
+  })
+}

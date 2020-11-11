@@ -9,11 +9,11 @@ import store from '@/store'
 
 
 //2、用axios创建新的实例 进行二次封装
+// 创建实例，封装不同接口请求
 const instance = axios.create({
-    //（1）配置基础路径和超时限制
+    //配置基础路径和超时限制
     baseURL: '/api', // 配置基础路径
     timeout: 20000
-
 })
 
 //3、请求拦截器和响应
@@ -36,7 +36,6 @@ instance.interceptors.request.use((config) => {
       config.headers.token = token
     }
   
-
     Nprogress.start()
     return config
 })

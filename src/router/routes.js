@@ -7,10 +7,43 @@ import Detail from '@/views/Detail'
 import AddCartSuccess from '@/views/AddCartSuccess'
 import ShopCart from '@/views/ShopCart'
 import Trade from '@/views/Trade'
+import Pay from '@/views/Pay'
+import PaySuccess from '@/views/PaySuccess'
+import Center from '@/views/Center'
+import MyOrder from '@/views/Center/MyOrder'
+import GroupOrder from '@/views/Center/GroupOrder'
 
 
 export default[
         //每一个路由是一个对象
+        {
+              path:'/center',
+              component:Center,
+              children:[
+            {
+              path:'myorder',
+              component:MyOrder
+
+            },
+            {
+              path:'grouporder',
+              component:GroupOrder
+            },
+            {
+              path:'',
+              redirect: 'myorder'
+            },
+          ]
+      
+       },
+        {
+          path:'/paysuccess',
+          component:PaySuccess
+        },
+        {
+          path:'/pay',
+          component:Pay
+        },
         {
           path:'/trade',
           component:Trade

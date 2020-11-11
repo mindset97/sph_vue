@@ -4,6 +4,8 @@ import router from '@/router'
 // import vue from '@vuex'
 import '@/api' //这里直接引入api文件，那么api文件就会运行
 import store from '@/store'
+import * as API from '@/api'
+// import '@/api' //这里直接引入api文件，那么api文件就会运行
 
 
 //引入mockserver文件
@@ -27,12 +29,24 @@ Vue.component('Floor',Floor)
 Vue.component('SliderLoop',SliderLoop)
 Vue.component('Pagination',Pagination)
 
+//按需引入element-ui当中的组件
+import { Message,MessageBox } from 'element-ui';
+
+
+//注册
+Vue.prototype.$msgbox = MessageBox;
+Vue.prototype.$alert = MessageBox.alert;
+Vue.prototype.$message = Message;
+
+Vue.config.productionTip = false
+
 
 
 
 new Vue({
   beforeCreate() {
     Vue.prototype.$bus = this
+    Vue.prototype.$API = API
   },
   render: h => h(App),
   router,

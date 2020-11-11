@@ -82,7 +82,7 @@
       </div>
     </div>
     <div class="sub clearFix">
-      <router-link class="subBtn" to="/pay">提交订单</router-link>
+      <a href="javascript:;" class="subBtn" @click="submitOrder">提交订单</a>
     </div>
   </div>
 </template>
@@ -107,16 +107,41 @@ import { mapGetters, mapState } from 'vuex'
       changeDefault(address,userAddressList){
         userAddressList.forEach(item => item.isDefault = '0')
         address.isDefault = '1'
+      },
+
+      async submitOrder() {
+      //点击提交订单，不能立即跳转
+      //先发请求创建订单，会返回我们创建好的订单编号（这个请求需要携带交易编号以及最终确定好的交易信息）
+      //准备请求的参数
+      let tradeNo = this.tradeInfo.tradeNo;
+      let tradeInfo = {
+        consignee: this.defaultAddress.consignee,
+        consigneeTel: this.defaultAddress.phoneNum,
+        deliveryAddress: this.defaultAddress.userAddress,
+        paymentWay: "ONLINE",
+        orderComment: this.message,
+        orderDetailList: this.detailArrayList
       }
+
+      // 发请求  返回的promise和之前dispatch返回的promise 不是一回事
+      const result = await this.$API.reqSubmitOrder(tradeNo,tradeInfo);
+      if(result.code === 200){
+        alert('提交订单成功')
+        this.orderId = result.data 
+        this.$router.push('/pay?orderId='+result.data)
+      }
+    },
+
+
     },
     computed:{
       ...mapGetters(['detailArrayList','userAddressList']),
       ...mapState({
-        tradeInfo:state => state.trade.tradeInfo || []
+        tradeInfo:state => state.trade.tradeInfo || [],
       }),
 
       defaultAddress(){
-        return this.userAddressList.find(item => item.isDefault === '1') 
+        return this.userAddressList.find(item => item.isDefault === '1') || {}
       }
 
     },
