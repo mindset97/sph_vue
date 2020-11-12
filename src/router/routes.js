@@ -1,6 +1,10 @@
 
-import Home from "@/views/Home"
-import Login from "@/views/Login"
+// import Home from "@/views/Home"
+const Home=()=>import('@/views/Home')
+// import Login from "@/views/Login"
+const Login=()=>import('@/views/Register')
+
+
 import Register from "@/views/Register"
 import Search from "@/views/Search"
 import Detail from '@/views/Detail'
@@ -13,44 +17,79 @@ import Center from '@/views/Center'
 import MyOrder from '@/views/Center/MyOrder'
 import GroupOrder from '@/views/Center/GroupOrder'
 
+import store from '@/store'
+
 
 export default[
         //每一个路由是一个对象
         {
-              path:'/center',
-              component:Center,
-              children:[
-            {
-              path:'myorder',
-              component:MyOrder
+            path:'/center',
+            component:Center,
+            children:[
+          {
+            path:'myorder',
+            component:MyOrder
 
-            },
-            {
-              path:'grouporder',
-              component:GroupOrder
-            },
-            {
-              path:'',
-              redirect: 'myorder'
-            },
-          ]
+          },
+          {
+            path:'grouporder',
+            component:GroupOrder
+          },
+          {
+            path:'',
+            redirect: 'myorder'
+          },
+        ]
       
        },
-        {
-          path:'/paysuccess',
-          component:PaySuccess
-        },
+       {
+        path:'/paysuccess',
+        component:PaySuccess,
+        beforeEnter: (to, from, next) => {
+          if(from.path === '/pay'){
+            next()
+          }else{
+            next('/')
+          }
+        }
+      },
         {
           path:'/pay',
-          component:Pay
+          component:Pay,
+          beforeEnter: (to, from, next) => {
+            if(from.path === '/trade'){
+              next()
+            }else{
+              next('/')
+            }
+          }
         },
         {
           path:'/trade',
-          component:Trade
+          component:Trade,
+          beforeEnter: (to, from, next) => {
+            if(from.path === '/shopcart'){
+              next()
+            }else{
+              next('/')
+            }
+          }
         },
         {
             path:'/login',
-            component:Login
+            component:Login,
+            meta:{
+              isHidden:true
+            },
+            beforeEnter: (to, from, next) => {
+              // 如果登录了，就跳转首页
+              if(store.state.user.userInfo.name){
+                next('/')
+              }else{
+                //没登录跳转登录页面
+                next()
+              }
+            }
           },
           {
             path:'/register',
@@ -60,9 +99,18 @@ export default[
             path:'/shopcart',
             component:ShopCart
           },
-        {
+          {
             path:'/addcartsuccess',
-            component:AddCartSuccess
+            component:AddCartSuccess,
+            beforeEnter: (to, from, next) => {
+              let skuNum = to.query.skuNum
+              let skuInfo = sessionStorage.getItem('SKUINFO_KEY')
+              if(skuInfo && skuNum){
+                next()
+              }else{
+                next('/')
+              }
+            }
           },
         {
             path:'/detail/:skuId',
